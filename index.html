@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Owner Profile iForm — जानकारी सबमिट करें</title>
+  <style>
+    :root{--accent:#2563eb;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,"Noto Sans",Arial;background:#f3f4f6;margin:0;padding:24px;color:#111}
+    .container{max-width:980px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,0.08);overflow:hidden}
+    header{display:flex;align-items:center;gap:16px;padding:20px 24px;border-bottom:1px solid #eef2f7}
+    header h1{font-size:20px;margin:0}
+    main{display:grid;grid-template-columns:1fr 360px;gap:20px;padding:20px}
+    form{padding:8px}
+    label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted)}
+    input[type=text],input[type=tel],select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;font-size:14px}
+    textarea{min-height:90px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .actions{display:flex;gap:10px;margin-top:14px}
+    button{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;border:0;font-weight:600;cursor:pointer}
+    button.secondary{background:#fff;color:var(--accent);border:1px solid #dbeafe}
+    .preview{padding:18px;background:linear-gradient(180deg,#ffffff,#fbfdff);border-left:1px solid #eef2f7}
+    .card{border-radius:10px;padding:16px;background:linear-gradient(180deg,#fff,#f8fafc);box-shadow:0 6px 18px rgba(16,24,40,0.04)}
+    .avatar{width:120px;height:120px;border-radius:10px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);font-size:18px;overflow:hidden}
+    .meta{margin-left:14px}
+    .flex{display:flex;align-items:center}
+    .kv{font-size:13px;color:var(--muted)}
+    .value{font-weight:700;margin-top:6px}
+    .small{font-size:12px;color:#374151}
+    footer{padding:16px 24px;border-top:1px solid #eef2f7;text-align:right}
+    .hint{font-size:13px;color:var(--muted);margin-bottom:8px}
+    @media (max-width:880px){main{grid-template-columns:1fr;}.preview{order:2}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">OP</div>
+      <div>
+        <h1>Owner Profile Form — विवरण भरें</h1>
+        <div class="hint">Form भरने पर सारी जानकारी तुरंत preview और downloadable formats में मिलेगी।</div>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <form id="profileForm" onsubmit="return false;">
+          <div class="row">
+            <div>
+              <label for="ownerName">Owner का नाम</label>
+              <input id="ownerName" name="ownerName" type="text" placeholder="पूरा नाम (e.g., राम कुमार)" required />
+            </div>
+            <div>
+              <label for="fatherName">पिता का नाम</label>
+              <input id="fatherName" name="fatherName" type="text" placeholder="पिता का नाम" />
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div style="margin-top:12px">
+            <label for="company">Company / Organization का नाम</label>
+            <input id="company" name="company" type="text" placeholder="Company name" />
+          </div>
+
+          <div style="margin-top:12px">
+            <label for="phone">Mobile नंबर</label>
+            <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" />
+          </div>
+
+          <div style="margin-top:12px">
+            <label for="description">विवरण / Short bio</label>
+            <textarea id="description" name="description" placeholder="छोटा परिचय, अनुभव, पता आदि"></textarea>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:12px;align-items:center">
+            <div>
+              <label for="photoInput">Owner Photo (optional)</label>
+              <input id="photoInput" type="file" accept="image/*" />
+            </div>
+            <div style="font-size:12px;color:var(--muted)">Photo चुनने पर preview में दिखेगा।</div>
+          </div>
+
+          <div class="actions">
+            <button id="submitBtn">Preview & Generate</button>
+            <button id="downloadJson" class="secondary" type="button">Download JSON</button>
+            <button id="downloadVcard" class="secondary" type="button">Download vCard</button>
+          </div>
+
+        </form>
+
+        <div style="margin-top:16px;font-size:13px;color:var(--muted)">Tip: आप "Download vCard" दबाकर सीधे मोबाइल में contact के रूप में import कर सकते हैं।</div>
+      </section>
+
+      <aside class="preview">
+        <div class="card">
+          <div class="flex">
+            <div id="avatar" class="avatar">OP</div>
+            <div class="meta">
+              <div class="kv">नाम</div>
+              <div id="pvName" class="value">—</div>
+              <div style="height:6px"></div>
+              <div class="kv">कंपनी / संगठन</div>
+              <div id="pvCompany" class="small">—</div>
+            </div>
+          </div>
+
+          <hr style="margin:12px 0;border:none;border-top:1px solid #eef2f7" />
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <div style="min-width:140px">
+              <div class="kv">पिता का नाम</div>
+              <div id="pvFather" class="small">—</div>
+            </div>
+            <div style="min-width:120px">
+              <div class="kv">Gender</div>
+              <div id="pvGender" class="small">—</div>
+            </div>
+            <div style="min-width:160px">
+              <div class="kv">Mobile</div>
+              <div id="pvPhone" class="small">—</div>
+            </div>
+          </div>
+
+          <hr style="margin:12px 0;border:none;border-top:1px solid #eef2f7" />
+
+          <div>
+            <div class="kv">विवरण</div>
+            <div id="pvDesc" class="small">—</div>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+            <button id="copyBtn" class="secondary" type="button">Copy to clipboard</button>
+            <button id="emailBtn" class="secondary" type="button">Send by Email</button>
+            <button id="printBtn" class="secondary" type="button">Print</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div style="float:left;font-size:13px;color:var(--muted);padding-top:6px">Local preview only — ไม่มี server ไม่มี data भेजा जाएगा।</div>
+      <div style="clear:both"></div>
+    </footer>
+  </div>
+
+  <script>
+    // helper: read selected image and show as avatar
+    const photoInput = document.getElementById('photoInput');
+    const avatar = document.getElementById('avatar');
+
+    photoInput.addEventListener('change', async (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const url = URL.createObjectURL(f);
+      const img = new Image();
+      img.onload = () => {
+        avatar.innerHTML = '';
+        avatar.style.background = 'transparent';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        avatar.appendChild(img);
+      }
+      img.src = url;
+    });
+
+    // form elements
+    const form = document.getElementById('profileForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const pvName = document.getElementById('pvName');
+    const pvCompany = document.getElementById('pvCompany');
+    const pvFather = document.getElementById('pvFather');
+    const pvGender = document.getElementById('pvGender');
+    const pvPhone = document.getElementById('pvPhone');
+    const pvDesc = document.getElementById('pvDesc');
+
+    function readForm() {
+      return {
+        name: document.getElementById('ownerName').value.trim(),
+        father: document.getElementById('fatherName').value.trim(),
+        gender: document.getElementById('gender').value,
+        company: document.getElementById('company').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        description: document.getElementById('description').value.trim(),
+      }
+    }
+
+    function updatePreview(data){
+      pvName.textContent = data.name || '—';
+      pvCompany.textContent = data.company || '—';
+      pvFather.textContent = data.father || '—';
+      pvGender.textContent = data.gender || '—';
+      pvPhone.textContent = data.phone || '—';
+      pvDesc.textContent = data.description || '—';
+
+      // avatar initials when no image
+      if (!avatar.querySelector('img')){
+        const initials = (data.name || 'OP').split(' ').map(s=>s[0]||'').slice(0,2).join('').toUpperCase();
+        avatar.textContent = initials || 'OP';
+        avatar.style.background = 'linear-gradient(135deg,var(--accent),#7dd3fc)';
+        avatar.style.color = '#fff';
+      }
+    }
+
+    submitBtn.addEventListener('click', () => {
+      const data = readForm();
+      updatePreview(data);
+      // save to localStorage for convenience
+      localStorage.setItem('owner_profile', JSON.stringify(data));
+      alert('Preview updated — अब आप Download JSON या vCard कर सकते हैं।');
+    });
+
+    // Download JSON
+    const downloadJson = document.getElementById('downloadJson');
+    downloadJson.addEventListener('click', () => {
+      const data = readForm();
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (data.name || 'owner_profile') + '.json';
+      a.click();
+    });
+
+    // Download vCard
+    const downloadVcard = document.getElementById('downloadVcard');
+    downloadVcard.addEventListener('click', () => {
+      const d = readForm();
+      // basic vCard (VERSION:3.0)
+      const lines = [];
+      lines.push('BEGIN:VCARD');
+      lines.push('VERSION:3.0');
+      lines.push('FN:' + (d.name || ''));
+      if (d.father) lines.push('N:' + d.father + ';;;' );
+      if (d.company) lines.push('ORG:' + d.company);
+      if (d.phone) lines.push('TEL;TYPE=CELL:' + d.phone);
+      if (d.description) lines.push('NOTE:' + d.description);
+      lines.push('END:VCARD');
+      const blob = new Blob([lines.join('\n')], {type:'text/vcard'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (d.name || 'owner') + '.vcf';
+      a.click();
+    });
+
+    // copy to clipboard
+    const copyBtn = document.getElementById('copyBtn');
+    copyBtn.addEventListener('click', async () => {
+      const d = readForm();
+      await navigator.clipboard.writeText(JSON.stringify(d, null, 2));
+      alert('Copied profile JSON to clipboard');
+    });
+
+    // send by email using mailto (data in body)
+    const emailBtn = document.getElementById('emailBtn');
+    emailBtn.addEventListener('click', () => {
+      const d = readForm();
+      const subject = encodeURIComponent('Owner Profile: ' + (d.name || ''));
+      const body = encodeURIComponent(JSON.stringify(d, null, 2));
+      // opens user's email client with body containing the profile JSON
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    });
+
+    // print preview area
+    const printBtn = document.getElementById('printBtn');
+    printBtn.addEventListener('click', () => {
+      const w = window.open('', '_blank');
+      const d = readForm();
+      const html = `<!doctype html><html><head><meta charset="utf-8"><title>Print - ${d.name||''}</title></head><body><pre>${JSON.stringify(d,null,2)}</pre></body></html>`;
+      w.document.write(html);
+      w.document.close();
+      w.print();
+    });
+
+    // init from localStorage if available
+    window.addEventListener('load', () => {
+      try {
+        const raw = localStorage.getItem('owner_profile');
+        if (raw){
+          const obj = JSON.parse(raw);
+          document.getElementById('ownerName').value = obj.name || '';
+          document.getElementById('fatherName').value = obj.father || '';
+          document.getElementById('gender').value = obj.gender || 'male';
+          document.getElementById('company').value = obj.company || '';
+          document.getElementById('phone').value = obj.phone || '';
+          document.getElementById('description').value = obj.description || '';
+          updatePreview(obj);
+        }
+      } catch(e){/*ignore*/}
+    });
+  </script>
+</body>
+</html>
